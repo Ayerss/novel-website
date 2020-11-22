@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= name %></title>
+    <link rel="stylesheet" href="/static/css/GeistUi-style.css" />
+    <link rel="stylesheet" href="/static/css/reset.css" />
+</head>
+<body>
+<code style="display: block;padding: 2rem;color: #fff;background: black"></code>
+
+<script src="/static/script/g.js"></script>
+<!--<script src="/static/script/vue.min.js"></script>-->
+<script src="/static/script/socket.io.min.js"></script>
+<script>
+    const socketId = getCookie('socketId');
+    const url = new URLSearchParams(window.location.search);
+
+    // request
+    requestPost('/novel/info', {
+        url: url.get('u'),
+        origin: url.get('o')
+    }).then(res => {
+        document.querySelector('code').innerText = JSON.stringify(res, null, 2);
+    });
+
+    // socket
+    const socket = io(`ws://localhost:8081`);
+    socket.emit('conn', socketId);
+    socket.on('conn', (msg) => {
+        console.log(msg);
+    });
+    socket.on('process', s => {
+        console.log('process', s);
+    });
+    socket.on('processError', s => {
+        console.log('processError', s);
+    });
+    socket.on('processSuccess', s => {
+        console.log('processSuccess', s);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+.root {
+  min-height: calc(100vh - 108px);
+  max-width: 782pt;
+  margin: 0 auto;
+  padding: 16pt;
+  box-sizing: border-box;
+}
+
+progress {
+  width: 100%;
+  height: 10px;
+}
+progress::-ms-fill,
+progress::-moz-progress-bar,
+progress::-webkit-progress-bar
+{
+  background-color: #eaeaea;
+}
+progress::-webkit-progress-value {
+  background-color:#000;
+}
+
+.d-flex {
+  display: flex;
+}
+
+@media screen and (min-width: 600px) {
+  .layout {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .layout main {
+    flex: 2;
+  }
+  .layout aside {
+    flex: 1;
+  }
+
+  .layout main,
+  .layout aside
+  {
+    padding: 0 10px;
+    width: 1%;
+  }
+}
+
+
