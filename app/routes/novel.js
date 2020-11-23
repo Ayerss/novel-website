@@ -4,7 +4,7 @@ const { search, delCache, info } = require(global.prefixPath + '/controller');
 
 router.post('/search', async (req, res) => {
   const { name, origins = [] } = req.body;
-  const socketId = req.cookies.io;
+  const { socketId } = req.cookies;
   const result = await search(name, origins, socketId);
   res.json(result);
 });
@@ -17,7 +17,7 @@ router.delete('/cache', async (req, res) => {
 
 router.post('/info', async (req, res) => {
   const { url, origin = '' } = req.body;
-  const socketId = req.cookies.io;
+  const { socketId } = req.cookies;
   const result = await info(url, origin, socketId);
   res.json(result);
 });

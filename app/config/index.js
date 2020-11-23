@@ -5,7 +5,7 @@ exports.redis = {
 };
 
 exports.socket = {
-  port: 8081
+  port: 3000
 }
 
 exports.origin = require(global.prefixPath + '/config/origin');

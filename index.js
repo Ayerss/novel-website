@@ -18,7 +18,7 @@ app.use('/static', express.static(path.join(global.prefixPath, 'public')))
 require('./app/routes')(app);
 
 app.listen(8080);
-console.log(process.env.NODE_ENV);
+
 if (process.env.NODE_ENV === 'development') {
   console.log('http://localhost:8080');
 }

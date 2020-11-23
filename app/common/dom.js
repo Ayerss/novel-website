@@ -50,7 +50,7 @@ class Dom {
   }
 
   getBookInfo(html) {
-    const { oName, oKey, data: { url: originHref } } = this;
+    const { oName, oKey, data: { url: oHref } } = this;
 
     const $ = cheerio.load(html);
     const body = $('body');
@@ -64,9 +64,10 @@ class Dom {
       description: this.getDom(body, 'infoDescription'),
       oName,
       oKey,
-      originHref,
+      oHref,
       list: []
     };
+
     const listDOm = $(this.getItem('infoChapterList'));
     for (let i = this.getItem('infoChapterIndex', 0), len = listDOm.length; i < len; i++) {
       const item = listDOm.eq(i);

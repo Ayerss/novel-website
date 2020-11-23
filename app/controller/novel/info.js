@@ -9,27 +9,27 @@ const {
 const { origin } = require(global.prefixPath + '/config');
 
 async function info(url, originKey, socketId) {
-  WS.emit('process', '正在解析参数...', socketId);
+  emitMsg(socketId, '正在解析参数...');
 
   if(!url || !isUrl(url)) {
-    WS.emit('processError', '错误的地址', socketId);
+    emitMsg(socketId, '错误的地址', 'processError');
     return Result.fail('错误的地址');
   }
 
   if (!origin.hasOwnProperty(originKey)) {
-    WS.emit('processError', '错误的来源', socketId);
+    emitMsg(socketId, '错误的来源', 'processError');
     return Result.fail('错误的来源');
   }
 
-  const cacheData = await Redis.get('data', 'book-info-' + url);
-
+  // const cacheData = await Redis.get('data', 'book-info-' + url);
+  const cacheData = false;
   if (cacheData) {
-    WS.emit('process', '检测到缓存数据...', socketId);
+    emitMsg(socketId, '检测到缓存数据...');
     const data = Object.assign(
       JSON.parse(String(cacheData)),
       { cache: true }
     );
-    WS.emit('processSuccess', '提取缓存', socketId);
+    emitMsg(socketId, '提取缓存', 'processSuccess');
     return Result.success(data);
   }
 
@@ -54,27 +54,32 @@ async function getBookInfo(url, currentOrigin, socketId) {
   dom.setData('url', url);
 
   if (!dom.isOriginUrl(url)) {
-    WS.emit('processError', '无效地址', socketId);
+    emitMsg(socketId, '无效地址', 'processError');
     return Result.fail('无效地址');
   }
 
-  WS.emit('process', '正在获取页面...', socketId);
+  emitMsg(socketId, '正在获取页面...');
   const htmlResult = await Request({
     method: 'GET',
     url,
   }, dom.searchPageCode);
 
   if (htmlResult === false) {
-    WS.emit('processError', '页面获取失败', socketId);
+    emitMsg(socketId, '页面获取失败', 'processError');
     return Result.fail('页面获取失败');
   }
 
-  WS.emit('process', '正在解析页面...', socketId);
+  emitMsg(socketId, '正在解析页面...');
   const bookInfo = dom.getBookInfo(htmlResult);
 
-  WS.emit('processSuccess', '解析完成...', socketId);
+  emitMsg(socketId, '解析完成', 'processSuccess');
 
   return bookInfo;
+}
+
+function emitMsg(id, msg, type = 'process') {
+  if (!id) return;
+  WS.emit(type, msg, id);
 }
 
 function isUrl(url) {

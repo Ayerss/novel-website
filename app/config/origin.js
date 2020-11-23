@@ -19,10 +19,10 @@ module.exports = {
 
     infoTitle: '#info h1|text',
     infoAuthor: '#info p|eq-0|text|allSpace|not-作者：',
-    infoNewChapter: '',
-    infoUpdated: '#info|eq-2|text|not-最后更新：',
+    infoNewChapter: '#info p|eq-3|text|not-最新更新：',
+    infoUpdated: '#info|eq-1|text|not-最后更新：',
     infoImage: '#fmimg img|attr-src|addHref',
-    infoDescription: '#intro|html|allSpace',
+    infoDescription: '#intro|text',
     infoChapterList: '#list dd',
     infoChapterIndex: 0,
     infoChapterTitle: 'a|text',
