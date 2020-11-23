@@ -1,5 +1,5 @@
 .root {
-  min-height: calc(100vh - 108px);
+  min-height: 100vh;
   max-width: 782pt;
   margin: 0 auto;
   padding: 16pt;
@@ -28,32 +28,11 @@ progress::-webkit-progress-value {
   width: 1%;
 }
 
-@media screen and (min-width: 600px) {
-  .layout {
-    display: flex;
-    flex-direction: row-reverse;
-  }
-
-  .layout main {
-    flex: 2;
-  }
-  .layout aside {
-    flex: 1;
-  }
-
-  .layout main,
-  .layout aside
-  {
-    padding: 0 10px;
-    width: 1%;
-  }
-}
-
 .m-0 {
   margin: 0;
 }
 .mt-2 {
-  margin-top: 2rem !important;
+  margin-top: 1rem !important;
 }
 
 .row {
@@ -77,7 +56,33 @@ progress::-webkit-progress-value {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
+  .col-md-3 {
+    flex: 0 0 26%;
+    max-width: 26%;
+  }
+  .col-md-9 {
+    flex: 0 0 74%;
+    max-width: 74%;
+  }
 }
+
+.icon-theme {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 99;
+  display: block;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+body:not(.dark-theme) #icon-d{
+  display: none;
+}
+.dark-theme #icon-l{
+  display: none;
+}
+
 
 
 

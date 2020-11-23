@@ -8,47 +8,22 @@
     <link rel="stylesheet" href="/static/css/GeistUi-style.css" />
     <link rel="stylesheet" href="/static/css/reset.css" />
     <style>
-        .row a {color: var(--geist-secondary)}
-        .arrow {position: fixed;bottom: 3rem;right: 3rem;z-index: 99;transition: all .3s;}
-        .bottom {transform: rotate(180deg);}
+        p {margin: .4rem;text-indent: 2em }
     </style>
 </head>
-<body class="<%= theme %>">
-<section class="root">
-    <section class="loading"></section>
-    <section id="app"></section>
-</section>
+<body class="root <%= theme %>">
+
+<h1><%= name %></h1>
+<section class="loading"></section>
+<section id="app"></section>
 
 <script type="text/template" id="tpl">
-   <div class="zi-fieldset">
-       <section class="row" style="padding: 1.25rem">
-           <section class="col-12 col-md-3">
-               <img width="145" :src="book.image" />
-           </section>
-           <section class="col-12 col-md-9">
-               <h1 class="m-0">
-                   <span>{{ book.title }} </span>
-                   <small>{{ book.author }}</small>
-               </h1>
-               <p>{{ book.description }}</p>
-               <span v-if="book.newChapter">最新章节: {{ book.newChapter }}</span>
-           </section>
-       </section>
-       <div class="zi-fieldset-footer">
-           <section class="row">
-               <div v-for="item in list" :key="item.href" class="col-12 col-md-4 mt-2">
-                   <a :href="formatUrl(item.href)" target="_blank">
-                       {{ item.title }}
-                   </a>
-               </div>
-           </section>
-       </div>
-       <div class="top" style="display: none">
-           <svg width="24" viewBox="0 0 75 65" fill="#000" style="margin-top: -3px;"><path d="M37.59.25l36.95 64H.64l36.95-64z"></path></svg>
-       </div>
-   </div>
+    <section>
+        <h3>{{ chapter.title }}</h3>
+        <div v-html="chapter.content"></div>
+    </section>
 </script>
-
+</body>
 <script src="/static/script/g.js"></script>
 <script src="/static/script/vue.min.js"></script>
 <script src="/static/script/socket.io.min.js"></script>
@@ -59,17 +34,16 @@
     const loading = document.querySelector('.loading');
 
     // render page
-    function render(book, list) {
+    function render(chapter) {
         new Vue({
             el: '#app',
             template: document.getElementById('tpl').innerText,
             data: {
-                book,
-                list,
+                chapter
             },
             methods: {
                 formatUrl(href) {
-                    return `/chapter?o=${oKey}&t=${encodeURIComponent(title)}&u=${encodeURIComponent(href)}`
+                    return `/chapter?o=${oKey}&t=${encodeURIComponent(title)}&u=${encodeURIComponent(href)}}`
                 }
             }
         });
@@ -91,13 +65,12 @@
     });
 
     // request
-    requestPost('/novel/info', {
+    requestPost('/novel/chapter', {
         url: url.get('u'),
         origin: oKey
     }).then(res => {
         if (res.code) {
-            const { list, ...book } = res.data;
-            render(book, list);
+            render(res.data);
         }
     });
 
@@ -114,5 +87,4 @@
         loading.appendChild(html);
     }
 </script>
-</body>
 </html>

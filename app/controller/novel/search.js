@@ -14,18 +14,18 @@ async function search(name, origins, socketId) {
   }
 
   // redis 缓存
-  // const redisCache = await Redis.get('data', `search-${name}`);
-  // if (redisCache) {
-  //   return Result.success(JSON.parse(String(redisCache)));
-  // }
+  const redisCache = await Redis.get('data', `search-${name}`);
+  if (redisCache) {
+    return Result.success(JSON.parse(String(redisCache)));
+  }
 
   const searchData = await iterationOrigins(name, origins, socketId);
-  // await Redis.set(
-  //   'data',
-  //   `search-${name}`,
-  //   JSON.stringify(searchData),
-  //   60 * 60 * 24
-  // );
+  await Redis.set(
+    'data',
+    `search-${name}`,
+    JSON.stringify(searchData),
+    60 * 60 * 24
+  );
 
   return Result.success(searchData);
 }

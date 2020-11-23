@@ -11,6 +11,7 @@ class Dom {
     this.reptile = reptile;
     this.oName = reptile.name;
     this.oKey = reptile.key;
+    this.rootHref = reptile.href;
     this.searchPageCode = this.getItem('searchPageCode', this.getItem('code', 'utf-8'))
   }
 
@@ -80,6 +81,23 @@ class Dom {
     return data;
   }
 
+  getChapter(html) {
+    const { oName, oKey, data: { url: oHref } } = this;
+
+    const $ = cheerio.load(html);
+    const body = $('body');
+
+    return {
+      title: this.getDom(body, 'chapterTitle'),
+      content: this.getDom(body, 'chapterContent'),
+      prevHref: this.getDom(body, 'chapterPrevHref'),
+      nextHref: this.getDom(body, 'chapterNextHref'),
+      oHref,
+      oName,
+      oKey
+    }
+  }
+
   getDom(dom, name) {
     return this.parse(dom, this.getItem(name));
   }
@@ -117,7 +135,7 @@ class Dom {
           result = result ? this.data.url + result : '';
           break;
         case 'rootHref':
-          result = result ? this.roothref + result : '';
+          result = result ? this.rootHref + result : '';
           break;
         case 'replace':
           result =

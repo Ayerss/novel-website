@@ -26,7 +26,7 @@ module.exports = {
     infoChapterList: '#list dd',
     infoChapterIndex: 0,
     infoChapterTitle: 'a|text',
-    infoChapterHref: 'a|attr-href|infoHref',
+    infoChapterHref: 'a|attr-href|rootHref',
 
     chapterTitle: '.bookname h1|text',
     chapterContent: '#content|remove-div|remove-script|html|not-请记住本书首发域名：booktxt.net。顶点小说手机版阅读网址：m.booktxt.net',
