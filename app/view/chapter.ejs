@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= name %></title>
-    <link rel="stylesheet" href="/static/css/GeistUi-style.css" />
-    <link rel="stylesheet" href="/static/css/reset.css" />
+    <link rel="stylesheet" href="/static/css/GeistUi-style.css"/>
+    <link rel="stylesheet" href="/static/css/reset.css"/>
     <style>
-        p {margin: .4rem;text-indent: 2em }
+        p {
+            margin: .4rem;
+            text-indent: 2em
+        }
     </style>
 </head>
-<body class="root <%= theme %>">
-
-<h1><%= name %></h1>
-<section class="loading"></section>
-<section id="app"></section>
+<body class="<%= theme %>">
+<section class="root">
+    <h1><%= name %></h1>
+    <section class="loading"></section>
+    <section id="app"></section>
+</section>
 
 <script type="text/template" id="tpl">
     <section>
