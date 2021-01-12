@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { search, delCache, info, chapter } = require(global.prefixPath + '/controller');
+const { search, delCache, info, chapter, download } = require(global.prefixPath + '/controller');
 
 router.post('/search', async (req, res) => {
   const { name, origins = [] } = req.body;
@@ -26,6 +26,14 @@ router.post('/chapter', async (req, res) => {
   const { url, origin = '' } = req.body;
   const { socketId } = req.cookies;
   const result = await chapter(url, origin, socketId);
+  res.json(result);
+});
+
+router.post('/download', async (req, res) => {
+  const { url, origin = '' } = req.body;
+  const { socketId } = req.cookies;
+  const result = await download(url, origin, socketId);
+  console.log(result);
   res.json(result);
 });
 

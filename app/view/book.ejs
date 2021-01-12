@@ -32,6 +32,11 @@
                </h1>
                <p>{{ book.description }}</p>
                <span v-if="book.newChapter">最新章节: {{ book.newChapter }}</span>
+               <p v-show="!isDownload" @click="donwload">下载</p>
+               <p v-show="isDownload">
+                   <progress :value="progress" :max.once="list.length"></progress>
+                   <span>{{ progress + '/' + list.length }}</span>
+               </p>
            </section>
        </section>
        <div class="zi-fieldset-footer">
@@ -46,6 +51,7 @@
        <div class="top" style="display: none">
            <svg width="24" viewBox="0 0 75 65" fill="#000" style="margin-top: -3px;"><path d="M37.59.25l36.95 64H.64l36.95-64z"></path></svg>
        </div>
+
    </div>
 </script>
 
@@ -66,10 +72,37 @@
             data: {
                 book,
                 list,
+                isDownload: false,
+                progress: 0,
             },
             methods: {
                 formatUrl(href) {
                     return `/chapter?o=${oKey}&t=${encodeURIComponent(title)}&u=${encodeURIComponent(href)}`
+                },
+                donwload() {
+                    this.isDownload = true;
+                    // socket
+                    const socket = ws();
+                    socket.on('downloading', s => {
+                        this.progress += 1;
+                    });
+                    socket.on('downloadError', s => {
+                        console.log('error');
+                    });
+                    socket.on('downloadSuccess', s => {
+                        console.log('success');
+                        // socket.off();
+                    });
+                    requestPost('/novel/download', {
+                        url: url.get('u'),
+                        origin: oKey
+                    }).then(res => {
+                        const {path , title} = res.data;
+                        const dom = document.createElement('a');
+                        dom.download = title + '.txt';
+                        dom.href = path;
+                        dom.click();
+                    })
                 }
             }
         });
@@ -97,6 +130,7 @@
     }).then(res => {
         if (res.code) {
             const { list, ...book } = res.data;
+            console.log(list.length);
             render(book, list);
         }
     });
